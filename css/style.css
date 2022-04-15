@@ -1,0 +1,72 @@
+/******************************************
+/* CSS
+/*******************************************/
+
+/* Box Model Hack */
+*{
+  box-sizing: border-box;
+}
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+
+header {
+  position: fixed;
+  top: 0%;
+  width: 100%;
+  height: 10vh;
+}
+
+section {
+  display: flex;
+  justify-content: align-items;
+}
+
+.h1-group {
+  margin-top: 10vh;
+  height: 50px;
+}
+
+/******************************************
+/* THEME
+/*******************************************/
+
+header {
+  background-color: rgb(36, 37, 38);
+}
+
+html {
+  color: rgb(246, 246, 247)
+}
+
+body {
+  background-color: rgb(24, 25, 26);
+}
+
+
+/******************************************
+/* IMAGES
+/*******************************************/
+
+#logo {
+  width: 50px;
+  height: 50px;
+  padding: 2px;
+  margin: 10px;
+  border-radius: 5%;
+  background-color: rgb(30, 29, 31);
+}
+
+/******************************************
+/* TYPOGRAPHY
+/*******************************************/
+
+html {
+  font-family: Lato, HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/
