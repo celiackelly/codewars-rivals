@@ -63,12 +63,22 @@ nav ul {
     margin: 0 0.5em;
   }
 
-/*Leaderboard Table*/
+/*Leaderboard Section*/
+
+  .leaderboard {
+    max-width: 75vw;
+  }
 
   table {
     margin: 40px 0 0 85px;
     border-collapse: collapse;
-    
+    width: 100%;
+    text-align: left; 
+  }
+
+  th, td {
+    padding: 10px;
+    border: 1px solid red;
   }
 
   tr {

@@ -1,4 +1,4 @@
-const leaderboard = document.querySelector('.leaderboard')
+const leaderboard = document.querySelector('.leaderboard table')
 
 //Need to populate the leaderboard on page load...
 
@@ -71,4 +71,6 @@ function getFetch(){
 
 //PROBLEM - the honor, rank, and position/sorting won't update, because those values are coming from local storage! 
 //We need to fetch the data for each user in local storage each time
+
+//Also, there must be a better solution to removing and replacing the whole tbody each time...
 
