@@ -53,14 +53,30 @@ nav ul {
     background-color: rgb(30, 29, 31);
   }
 
-form {
-  margin-left: 85px;
-}
+/*Form: Add User*/
 
-input {
-  margin: 0 0.5em;
-}
+  form {
+    margin-left: 85px;
+  }
 
+  input {
+    margin: 0 0.5em;
+  }
+
+/*Leaderboard Table*/
+
+  table {
+    margin: 40px 0 0 85px;
+    border-collapse: collapse;
+  }
+
+  tr {
+    border-bottom: 2px solid rgb(62, 63,  66);
+  }
+
+  th {
+    padding: 10px;
+  }
 
 /******************************************
 /* THEME
