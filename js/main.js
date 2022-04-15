@@ -1,4 +1,4 @@
-const leaderboard = document.querySelector('.leaderboard tbody')
+const leaderboard = document.querySelector('.leaderboard')
 
 //Need to populate the leaderboard on page load...
 
@@ -23,9 +23,7 @@ function getFetch(){
 				if (!localStorage.getItem('users')) {
 					let usersArray= []
 					localStorage.setItem('users', JSON.stringify(usersArray))
-				} else {
-
-				}
+				} 
 
 				let usersArray = []
 				// Parse the serialized data back into an aray of objects
@@ -43,9 +41,13 @@ function getFetch(){
 				// Re-serialize the array back into a string and store it in localStorage
 				localStorage.setItem('users', JSON.stringify(usersArray));
 
+				const newTBody = document.createElement('tbody')
+
 				//Add user data to the DOM in the leaderboard
 				usersArray.forEach((user, i) => {
+
 					const tr = document.createElement('tr')
+					newTBody.appendChild(tr)
 
 					const userInfo = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
 
@@ -54,8 +56,12 @@ function getFetch(){
 						td.textContent = info
 						tr.appendChild(td)
 					})
-					leaderboard.appendChild(tr)
+
+					newTBody.appendChild(tr)
 				})
+
+				leaderboard.removeChild(document.querySelector('tbody'))
+				leaderboard.appendChild(newTBody)
 
 			})
 			.catch(err => {
