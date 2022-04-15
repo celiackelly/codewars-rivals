@@ -8,34 +8,59 @@
 }
 
 /******************************************
-/* LAYOUT
-/*******************************************/
-
-.hero {
-  display: flex;
-  align-items: center;
-  column-gap: 40px;
-}
-
-h1 {
-  flex: 3;
-  display: inline-flex;
-  vertical-align: text-bottom;    /*Make logo and h1 text align*/
-}
-
-aside {
-  justify-self: flex-end;
-  flex: 1;
-}
-
-/******************************************
 /* HEADER
 /*******************************************/
 
+header {
+  height: 10vh;;
+}
+
 nav ul {
   margin: 0;
-
+  padding-top: 10px;
 }
+
+
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+
+/*Hero Section*/
+
+  .hgroup {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    margin: 2em;
+  }
+
+  .hgroup div > * {
+    display: inline;
+    vertical-align: middle;    
+  }
+
+  .hgroup h3 {
+    margin-left: 55px;
+  }
+
+  #logo {
+    width: 2em;
+    height: 2em;
+    padding: 2px;
+    margin: 10px;
+    border-radius: 5%;
+    background-color: rgb(30, 29, 31);
+  }
+
+form {
+  margin-left: 85px;
+}
+
+input {
+  margin: 0 0.5em;
+}
+
 
 /******************************************
 /* THEME
@@ -61,15 +86,6 @@ body {
 /******************************************
 /* IMAGES
 /*******************************************/
-
-#logo {
-  width: 50px;
-  height: 50px;
-  padding: 2px;
-  margin: 10px;
-  border-radius: 5%;
-  background-color: rgb(30, 29, 31);
-}
 
 /******************************************
 /* TYPOGRAPHY
