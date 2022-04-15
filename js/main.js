@@ -1,4 +1,4 @@
-const leaderboard = document.querySelector('.leaderboard')
+const leaderboard = document.querySelector('.leaderboard tbody')
 
 //Need to populate the leaderboard on page load...
 
