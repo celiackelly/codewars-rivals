@@ -17,13 +17,14 @@ function getFetch(){
 			.then(res => res.json()) // parse response as JSON
 			.then(data => {
 				console.log(data)
+				
 
 				//If no localStorage, set 'users' to empty array 
 				if (!localStorage.getItem('users')) {
 					let usersArray= []
 					localStorage.setItem('users', JSON.stringify(usersArray))
 				} else {
-					
+
 				}
 
 				let usersArray = []
@@ -36,11 +37,11 @@ function getFetch(){
 				// Log the array value
 				console.log(usersArray) 
 
-				// Re-serialize the array back into a string and store it in localStorage
-				localStorage.setItem('users', JSON.stringify(usersArray));
-
 				//Sort usersArray by honor
 				usersArray.sort((a, b) => b.honor - a.honor)
+
+				// Re-serialize the array back into a string and store it in localStorage
+				localStorage.setItem('users', JSON.stringify(usersArray));
 
 				//Add user data to the DOM in the leaderboard
 				usersArray.forEach((user, i) => {
