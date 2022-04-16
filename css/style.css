@@ -78,7 +78,7 @@ nav ul {
 
   th, td {
     padding: 10px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
   }
 
   tr {

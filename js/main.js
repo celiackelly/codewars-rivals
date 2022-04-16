@@ -1,8 +1,6 @@
-const leaderboard = document.querySelector('.leaderboard table')
+const table = document.querySelector('table')
 
 //Need to populate the leaderboard on page load...
-
-
 
 
 document.querySelector('button').addEventListener('click', getFetch)
@@ -10,7 +8,6 @@ document.querySelector('button').addEventListener('click', getFetch)
 function getFetch(){
 	
 	const user = document.querySelector('input').value
-	console.log(user)
 	const url = `https://www.codewars.com/api/v1/users/${user}`
 
 	fetch(url)
@@ -60,8 +57,8 @@ function getFetch(){
 					newTBody.appendChild(tr)
 				})
 
-				leaderboard.removeChild(document.querySelector('tbody'))
-				leaderboard.appendChild(newTBody)
+				table.removeChild(document.querySelector('tbody'))
+				table.appendChild(newTBody)
 
 			})
 			.catch(err => {
