@@ -19,12 +19,27 @@ function getUsersInfo() {
 		.catch(err => console.log(`Error: ${err}`))
 }
 
-//On page load, get users stats 
-getUsersInfo()
-
-//Listen for add-user form submission
-document.querySelector('.add-user').addEventListener('submit', addUser)
-//how do I then fire getUpdatedStats() and generateLeaderboard() ? maybe just combine those three in one larger function tied to the event listener
+//Generate leaderboard table from stats (userInfo array)
+function generateLeaderboard() {
+	const table = document.querySelector('table')
+	const newTBody = document.createElement('tbody')
+	
+		usersInfo.forEach((user, i) => {
+			const tr = document.createElement('tr')
+			newTBody.appendChild(tr)
+		
+			const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
+			console.log(stats)
+			stats.forEach(stat => {
+				const td = document.createElement('td')
+				td.textContent = stat
+				tr.appendChild(td)
+			})
+		console.log(newTBody)
+		})
+	table.removeChild(document.querySelector('tbody'))
+	table.appendChild(newTBody)
+}
 
 //Function- Add new user to localStorage
 function addUser(e){
@@ -61,31 +76,19 @@ function addUser(e){
 		});
 }
 
-//Generate leaderboard table from stats (userInfo array)
-function generateLeaderboard() {
-	const table = document.querySelector('table')
-	const newTBody = document.createElement('tbody')
-	
-		usersInfo.forEach((user, i) => {
-			const tr = document.createElement('tr')
-			newTBody.appendChild(tr)
-		
-			const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
-			console.log(stats)
-			stats.forEach(stat => {
-				const td = document.createElement('td')
-				td.textContent = stat
-				tr.appendChild(td)
-			})
-		console.log(newTBody)
-		})
-	table.removeChild(document.querySelector('tbody'))
-	table.appendChild(newTBody)
+function regnerateLeaderboardOnAdd() {
+	addUser()
+	getUpdatedStats()
+	generateLeaderboard()
 }
 
-//Problem - DOM stuff needs to be INSIDE the fetch call; otherwise, the rest of the document execution proceeds while waiting for the fetch to finish. 
-//BUT if all the DOM stuff happens inside the fetch call, you can't sort the leaderboard, because the fetch is being executed one username at a time. 
-//Might be able to sort the table once in place w/a separate function? 
+//On page load, get users stats and generate leaderboard
+getUsersInfo()
+generateLeaderboard()
+
+//Listen for add-user form submission
+document.querySelector('.add-user').addEventListener('submit', regenerateLeaderboard)
+//how do I then fire getUpdatedStats() and generateLeaderboard() ? maybe just combine those three in one larger function tied to the event listener
 
 
 
