@@ -1,57 +1,26 @@
-const table = document.querySelector('table')
-
 //On page load, get usersList from localStorage and parse into array 
-// let usersList = JSON.parse(localStorage.getItem('users')) || []
-//hard coded for now, just to test
-let usersList = ['sashavining', 'celiackelly']
-let usersInfo = []
+let usersList = JSON.parse(localStorage.getItem('users')) || []
+//Map usersList onto URLs for fetch call
+let urls = usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
 
+const table = document.querySelector('table')
 const newTBody = document.createElement('tbody')
-//Problem - DOM stuff needs to be INSIDE the fetch call; otherwise, the rest of the document execution proceeds while waiting for the fetch to finish. BUT if all the DOM stuff happens inside the fetch call, you can't sort the leaderboard, because the fetch is being executed one username at a time. Might be able to sort the table once in place w/a separate function? 
 
-//Also- WHY am I getting a duplicate row for Sasha? 
-
-//Fetch and add user data to usersInfo array 
-
-// async function getUsersStats() {
-// 	const res = await usersList.forEach(user => {
-// 		const url = `https://www.codewars.com/api/v1/users/${user}`
-// 		fetch(url)
-// 			.then(res => res.json())
-// 			.then(data => {
-// 				console.log(data)
-// 				usersInfo.push(data)
-// 	})
-// 	console.log(usersInfo)
-// 	})
-// }
-
-async function getUsersStats() {
-	const getStats = (user) => {
-		const url = `https://www.codewars.com/api/v1/users/${user}`
-		fetch(url)
-		.then(res => res.json())
+//Fetch updated stats for each user; once all fetches have completed, sort the array 
+function getUsersStats() {
+	Promise.all(urls.map(url => fetch(url)))
+		.then(res => Promise.all(res.map(r => r.json())))
 		.then(data => {
-			usersInfo.push(data)
+			data.sort((a, b) => b.honor - a.honor)
+			console.log(data)
 		})
-	}
-	await usersList.forEach(user => getStats(user))
-	usersInfo.sort((a, b) => b.honor - a.honor)
-	console.log(usersInfo)
+		.then()
 }
 
+//On page load, get users stats 
 getUsersStats()
 
 
-// getUsersStats()
-
-// usersList.forEach(user => {
-// 	const url = `https://www.codewars.com/api/v1/users/${user}`
-// 	fetch(url)
-// 		.then(res => res.json())
-// 		.then(data => {
-// 			console.log(data)
-// 			usersInfo.push(data)
 
 // 			//This is the problem- I need all the users pushed to the array FIRST, and then I need to cycle through and add to the DOM. But that's not what this is doing. This is why I get duplicates! 
 // 			usersInfo.forEach((user, i) => {
@@ -153,4 +122,9 @@ function getFetch(){
 //We need to fetch the data for each user in local storage each time
 
 //Also, there must be a better solution to removing and replacing the whole tbody each time...
+
+
+//Problem - DOM stuff needs to be INSIDE the fetch call; otherwise, the rest of the document execution proceeds while waiting for the fetch to finish. BUT if all the DOM stuff happens inside the fetch call, you can't sort the leaderboard, because the fetch is being executed one username at a time. Might be able to sort the table once in place w/a separate function? 
+
+
 
