@@ -11,48 +11,80 @@ const newTBody = document.createElement('tbody')
 
 //Also- WHY am I getting a duplicate row for Sasha? 
 
-
 //Fetch and add user data to usersInfo array 
-usersList.forEach(user => {
-	const url = `https://www.codewars.com/api/v1/users/${user}`
-	fetch(url)
+
+// async function getUsersStats() {
+// 	const res = await usersList.forEach(user => {
+// 		const url = `https://www.codewars.com/api/v1/users/${user}`
+// 		fetch(url)
+// 			.then(res => res.json())
+// 			.then(data => {
+// 				console.log(data)
+// 				usersInfo.push(data)
+// 	})
+// 	console.log(usersInfo)
+// 	})
+// }
+
+async function getUsersStats() {
+	const getStats = (user) => {
+		const url = `https://www.codewars.com/api/v1/users/${user}`
+		fetch(url)
 		.then(res => res.json())
 		.then(data => {
-			console.log(data)
 			usersInfo.push(data)
-
-			//This is the problem- I need all the users pushed to the array FIRST, and then I need to cycle through and add to the DOM. But that's not what this is doing. This is why I get duplicates! 
-			usersInfo.forEach((user, i) => {
-				console.log('hello')
-			
-				const tr = document.createElement('tr')
-				newTBody.appendChild(tr)
-				
-				const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
-				console.log(stats)
-				stats.forEach(stat => {
-					const td = document.createElement('td')
-					td.textContent = stat
-					tr.appendChild(td)
-				})
-				console.log(newTBody)
-			})
 		})
-		.catch(err => {
-			console.log(`error ${err}`)
-	})
-})
+	}
+	await usersList.forEach(user => getStats(user))
+	usersInfo.sort((a, b) => b.honor - a.honor)
+	console.log(usersInfo)
+}
+
+getUsersStats()
+
+
+// getUsersStats()
+
+// usersList.forEach(user => {
+// 	const url = `https://www.codewars.com/api/v1/users/${user}`
+// 	fetch(url)
+// 		.then(res => res.json())
+// 		.then(data => {
+// 			console.log(data)
+// 			usersInfo.push(data)
+
+// 			//This is the problem- I need all the users pushed to the array FIRST, and then I need to cycle through and add to the DOM. But that's not what this is doing. This is why I get duplicates! 
+// 			usersInfo.forEach((user, i) => {
+// 				console.log('hello')
+			
+// 				const tr = document.createElement('tr')
+// 				newTBody.appendChild(tr)
+				
+// 				const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
+// 				console.log(stats)
+// 				stats.forEach(stat => {
+// 					const td = document.createElement('td')
+// 					td.textContent = stat
+// 					tr.appendChild(td)
+// 				})
+// 				console.log(newTBody)
+// 			})
+// 		})
+// 		.catch(err => {
+// 			console.log(`error ${err}`)
+// 	})
+// })
 //how to deal with duplicates getting pushed to the array? 
 
 //Sort usersInfo by honor
-usersInfo.sort((a, b) => b.honor - a.honor)
-console.log(usersInfo)
+// usersInfo.sort((a, b) => b.honor - a.honor)
+// console.log(usersInfo)
 
 //For each user in usersInfo, add stats to the DOM
 
-table.removeChild(document.querySelector('tbody'))
-table.appendChild(newTBody)
-console.log(newTBody)
+// table.removeChild(document.querySelector('tbody'))
+// table.appendChild(newTBody)
+// console.log(newTBody)
 
 
 document.querySelector('button').addEventListener('click', getFetch)
@@ -115,7 +147,7 @@ function getFetch(){
 			.catch(err => {
 					console.log(`error ${err}`)
 			});
-}
+	}
 
 //PROBLEM - the honor, rank, and position/sorting won't update, because those values are coming from local storage! 
 //We need to fetch the data for each user in local storage each time
