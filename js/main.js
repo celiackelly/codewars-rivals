@@ -1,20 +1,23 @@
 //On page load, get usersList from localStorage and parse into array 
-let usersList = JSON.parse(localStorage.getItem('users')) || []
+// let usersList = JSON.parse(localStorage.getItem('users')) || []
+let usersList = ['sashavining', 'celiackelly', 'xRichard']
+let usersInfo 
+
 //Map usersList onto URLs for fetch call
 let urls = usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
 
-const table = document.querySelector('table')
-const newTBody = document.createElement('tbody')
+//Function: Sort array of user stat objects by honor (descending)
+const sortbyHonor = (arr) => arr.sort((a, b) => b.honor - a.honor)
 
-//Fetch updated stats for each user; once all fetches have completed, sort the array 
+//Function: Fetch updated stats for each user; once all fetches have completed, sort the array 
 function getUsersStats() {
 	Promise.all(urls.map(url => fetch(url)))
 		.then(res => Promise.all(res.map(r => r.json())))
 		.then(data => {
-			data.sort((a, b) => b.honor - a.honor)
-			console.log(data)
+			usersInfo = sortbyHonor(data)
+			console.log(usersInfo)
 		})
-		.then()
+		.catch(err => console.log(`Error: ${err}`))
 }
 
 //On page load, get users stats 
@@ -22,101 +25,94 @@ getUsersStats()
 
 
 
-// 			//This is the problem- I need all the users pushed to the array FIRST, and then I need to cycle through and add to the DOM. But that's not what this is doing. This is why I get duplicates! 
-// 			usersInfo.forEach((user, i) => {
-// 				console.log('hello')
-			
-// 				const tr = document.createElement('tr')
-// 				newTBody.appendChild(tr)
-				
-// 				const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
-// 				console.log(stats)
-// 				stats.forEach(stat => {
-// 					const td = document.createElement('td')
-// 					td.textContent = stat
-// 					tr.appendChild(td)
-// 				})
-// 				console.log(newTBody)
-// 			})
-// 		})
-// 		.catch(err => {
-// 			console.log(`error ${err}`)
-// 	})
-// })
-//how to deal with duplicates getting pushed to the array? 
+const table = document.querySelector('table')
+const newTBody = document.createElement('tbody')
 
-//Sort usersInfo by honor
-// usersInfo.sort((a, b) => b.honor - a.honor)
-// console.log(usersInfo)
+//Generate leaderboard table
+	// usersInfo.forEach((user, i) => {
+	// 	console.log('hello')
+	
+	// 	const tr = document.createElement('tr')
+	// 	newTBody.appendChild(tr)
+		
+	// 	const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
+	// 	console.log(stats)
+	// 	stats.forEach(stat => {
+	// 		const td = document.createElement('td')
+	// 		td.textContent = stat
+	// 		tr.appendChild(td)
+	// 	})
+	// 	console.log(newTBody)
+	// })
 
-//For each user in usersInfo, add stats to the DOM
+
+
+// For each user in usersInfo, add stats to the DOM
 
 // table.removeChild(document.querySelector('tbody'))
 // table.appendChild(newTBody)
 // console.log(newTBody)
 
 
-document.querySelector('button').addEventListener('click', getFetch)
+document.querySelector('.add-user').addEventListener('submit', addUser)
 
-function getFetch(){
+function addUser(){
 	
-	const user = document.querySelector('input').value
+	const user = document.querySelector('.add-user input').value
 	const url = `https://www.codewars.com/api/v1/users/${user}`
 
 	fetch(url)
-			.then(res => res.json()) // parse response as JSON
-			.then(data => {
-				console.log(data)
+		.then(res => res.json()) // parse response as JSON
+		.then(data => {
+			console.log(data)
 				
-				//If no localStorage, set 'users' to empty array 
-				if (!localStorage.getItem('users')) {
-					let usersArray= []
-					localStorage.setItem('users', JSON.stringify(usersArray))
-				} 
+			//If no localStorage, set 'users' to empty array 
+			if (!localStorage.getItem('users')) {
+				let usersList= []
+				localStorage.setItem('users', JSON.stringify(usersList))
+			} 
 
-				let usersArray = []
-				// Parse the serialized data back into an array of objects
-				usersArray = JSON.parse(localStorage.getItem('users')) || [];
+			let usersList = []
+			// Parse the serialized data back into an array of objects
+			usersList = JSON.parse(localStorage.getItem('users')) || [];
 
-				// Push the new data onto the array
-				usersArray.push(data);
+			// Push the new data onto the array
+			usersList.push(data.username);
 
-				// Log the array value
-				console.log(usersArray) 
+			// Log the array value
+			console.log(usersList) 
 
-				//Sort usersArray by honor
-				usersArray.sort((a, b) => b.honor - a.honor)
+			// Re-serialize the array back into a string and store it in localStorage
+			localStorage.setItem('users', JSON.stringify(usersList));
 
-				// Re-serialize the array back into a string and store it in localStorage
-				localStorage.setItem('users', JSON.stringify(usersArray));
+		})
+		.catch(err => {
+				console.log(`error ${err}`)
+		});
+}
 
-				const newTBody = document.createElement('tbody')
 
-				//Add user data to the DOM in the leaderboard
-				usersArray.forEach((user, i) => {
+		// 	//Add user data to the DOM in the leaderboard
+		// 	usersArray.forEach((user, i) => {
 
-					const tr = document.createElement('tr')
-					newTBody.appendChild(tr)
+		// 		const tr = document.createElement('tr')
+		// 		newTBody.appendChild(tr)
 
-					const userInfo = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
+		// 		const userInfo = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
 
-					userInfo.forEach(info => {
-						const td = document.createElement('td')
-						td.textContent = info
-						tr.appendChild(td)
-					})
+		// 		userInfo.forEach(info => {
+		// 			const td = document.createElement('td')
+		// 			td.textContent = info
+		// 			tr.appendChild(td)
+		// 		})
 
-					newTBody.appendChild(tr)
-				})
+		// 		newTBody.appendChild(tr)
+		// 	})
 
-				table.removeChild(document.querySelector('tbody'))
-				table.appendChild(newTBody)
+		// 	table.removeChild(document.querySelector('tbody'))
+		// 	table.appendChild(newTBody)
 
-			})
-			.catch(err => {
-					console.log(`error ${err}`)
-			});
-	}
+		// })
 
 //PROBLEM - the honor, rank, and position/sorting won't update, because those values are coming from local storage! 
 //We need to fetch the data for each user in local storage each time
