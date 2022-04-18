@@ -54,7 +54,7 @@ const newTBody = document.createElement('tbody')
 // console.log(newTBody)
 
 
-document.querySelector('.add-user').addEventListener('submit', addUser)
+document.querySelector('.add-user button').addEventListener('click', addUser)
 
 function addUser(){
 	
