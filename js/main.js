@@ -84,3 +84,15 @@ getUsersInfo()
 
 // //Listen for add-user form submission
 document.querySelector('.add-user').addEventListener('submit', addUser)
+
+//Listen for end of error-message animation (fadeIn, fadeOut)
+// const errorMessage = document.querySelector('.error-message')
+// errorMessage.addEventListener('animationend', () => {
+// 	errorMessage.classList.remove('fade-in-out')
+// })
+
+//Maybe instead, have an @reader rule? 
+/*
+https://www.w3.org/WAI/tutorials/forms/notifications/
+Sometimes, for example, when using AJAX techniques, the browser is not loading a new page but shows changes, such as form errors, dynamically on the page. The list of errors should be inserted into a prominent container on the top to inform the user in such a case. In addition to the advice above, this container should have the role attribute set to alert to make assistive technology users aware of this change.
+*/
