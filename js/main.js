@@ -49,6 +49,14 @@ async function addUser(e){
 		.then(res => res.json()) // parse response as JSON
 		.then(data => {
 
+			//If no user by that name, return 
+			if (!data.username) {
+				const errorMessage = document.querySelector('.error-message')
+				errorMessage.textContent = 'Please enter a valid username.'
+				errorMessage.classList.add('fade-in-out')
+				throw new Error ('Not a valid username')
+			}
+
 			//If no localStorage, set 'users' to empty array 
 			if (!localStorage.getItem('users')) {
 				let usersList= []
@@ -66,7 +74,7 @@ async function addUser(e){
 			localStorage.setItem('users', JSON.stringify(usersList));
 		})
 		.catch(err => {
-			console.log(`error ${err}`)
+			console.log(err)
 		})
 	getUsersInfo()
 }

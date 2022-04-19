@@ -57,11 +57,23 @@ nav ul {
 
   form {
     margin-left: 85px;
+    display: block;
+  }
+
+  .add-user fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.5em 0;
   }
 
   input {
     margin: 0 0.5em;
   }
+
+  form span {
+    padding: .25em;
+  }
+
 
 /*Leaderboard Section*/
 
@@ -122,3 +134,108 @@ html {
 /******************************************
 /* ADDITIONAL STYLES
 /*******************************************/
+
+
+/******************************************
+/* ANIMATIONS
+/*******************************************/
+
+  /*Error message fade in and out*/
+
+  .fade-in-out {
+    background-color: rgba(163, 63, 41, 0.886);
+    animation: fadeIn ease 1s, fadeOut ease 2s 5s;
+    -webkit-animation: fadeIn ease 1s, fadeOut ease 2s 5s;
+    -moz-animation: fadeIn ease 1s, fadeOut ease 2s 5s;
+    -o-animation: fadeIn ease 1s, fadeOut ease 2s 5s;
+    -ms-animation: fadeIn ease 1s, fadeOut ease 2s 5s;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-o-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-moz-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-webkit-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-o-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-ms-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+   }
+  }
