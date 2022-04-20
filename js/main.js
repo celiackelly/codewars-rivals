@@ -45,6 +45,11 @@ async function addUser(e){
 	const user = document.querySelector('.add-user input').value
 	const url = `https://www.codewars.com/api/v1/users/${user}`
 
+	//Clear any previous error messages
+	const errorMessage = document.querySelector('.error-message')
+	errorMessage.textContent = ''
+	errorMessage.classList.remove('fade-in-out')
+
 	const newUser = await fetch(url)
 		.then(res => res.json()) // parse response as JSON
 		.then(data => {
