@@ -49,9 +49,8 @@ async function addUser(e){
 		.then(res => res.json()) // parse response as JSON
 		.then(data => {
 
-			//If no user by that name, return 
+			//If no user by that name, show error and return 
 			if (!data.username) {
-				const errorMessage = document.querySelector('.error-message')
 				errorMessage.textContent = 'Please enter a valid username.'
 				errorMessage.classList.add('fade-in-out')
 				throw new Error ('Not a valid username')
@@ -67,7 +66,14 @@ async function addUser(e){
 			// Parse the serialized data back into an array of objects
 			usersList = JSON.parse(localStorage.getItem('users')) || [];
 
-			// Push the new data onto the array
+			//Check if username is already in usersList; if so, throw error and return 
+			if (usersList.includes(data.username)) {
+				errorMessage.textContent = 'This user is already on the leaderboard.'
+				errorMessage.classList.add('fade-in-out')
+				throw new Error ('Username is already in localStorage')
+			}
+
+			//Push the new data onto the array
 			usersList.push(data.username);
 
 			// Re-serialize the array back into a string and store it in localStorage
