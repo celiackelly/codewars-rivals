@@ -72,6 +72,9 @@ async function addUser(e){
 
 			// Re-serialize the array back into a string and store it in localStorage
 			localStorage.setItem('users', JSON.stringify(usersList));
+
+			//Clear text from input 
+			document.querySelector('input').value = ''
 		})
 		.catch(err => {
 			console.log(err)
