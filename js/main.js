@@ -1,24 +1,50 @@
-//On page load, get usersList from localStorage and parse into array 
-let usersList = JSON.parse(localStorage.getItem('users')) || []
-let usersInfo = []
+/*
+What objects are needed? (use classes for all?)
+ - leaderboardTable 
+      - what about components like tr and td? 
+ - leaderboardLogic / usersData 
+		- errorMessage 
+ - localStorageObject
+*/
 
-//Function: Sort array of user stat objects by honor (descending)
-const sortbyHonor = (arr) => arr.sort((a, b) => b.honor - a.honor)
+class LeaderboardLogic {
 
-//Function: Fetch updated info/stats for each user; once all fetches have completed, sort the array 
-function getUsersInfo() {
-	let usersList = JSON.parse(localStorage.getItem('users')) || []
-	let urls = usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
+	constructor() {
+		this.usersList = JSON.parse(localStorage.getItem('users')) || ['sashavining', 'celiackelly'] //Abstract this out? And change back to []
+		this.urls = this.usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
+		this.usersInfo 
+	}
 
-	Promise.all(urls.map(url => fetch(url)))
-		.then(res => Promise.all(res.map(r => r.json())))
-		.then(data => {
-			usersInfo = sortbyHonor(data)
-			generateLeaderboard()
-		})
-		.catch(err => console.log(`Error: ${err}`))
+	//Fetch updated info/stats for each user; once all fetches have completed, sort the array 
+	fetchUsersInfo() {
+		Promise.all(this.urls.map(url => fetch(url)))
+			.then(res => Promise.all(res.map(r => r.json())))
+			.then(data => {
+				this.usersInfo = data
+				this.sortByHonor()
+				// generateLeaderboard() - FIX THIS LATER - Can I abstract it out, or not b/c of the promise? 
+			})
+			.catch(err => console.log(`Error: ${err}`))
+	}
+	
+	//Sort array of user stat objects by honor (descending)
+	sortByHonor() {
+		this.usersInfo.sort((a, b) => b.honor - a.honor)
+	}
+
+	//Add new user 
+	addUser() {
+
+	}
+
 }
-//test
+
+const leaderboardLogic = new LeaderboardLogic
+//On page load, get users stats and generate leaderboard
+leaderboardLogic.fetchUsersInfo()
+
+
+
 //Generate leaderboard table from stats (userInfo array)
 function generateLeaderboard() {
 	const table = document.querySelector('table')
@@ -90,11 +116,9 @@ async function addUser(e){
 		.catch(err => {
 			console.log(err)
 		})
-	getUsersInfo()
+	fetchUsersInfo()
 }
 
-//On page load, get users stats and generate leaderboard
-getUsersInfo()
 
 // //Listen for add-user form submission
 document.querySelector('.add-user').addEventListener('submit', addUser)
