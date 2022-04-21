@@ -1,12 +1,6 @@
-/*
-What objects are needed? (use classes for all?)
- - leaderboardTable 
-      - what about components like tr and td? 
- - leaderboardLogic / usersData 
-		- errorMessage 
- - localStorageObject
-
+/* OOP
  - could you abtract more and make a USER class? 
+ - what about components like tr and td? 
 */
 
 class LeaderboardLogic {
@@ -25,7 +19,7 @@ class LeaderboardLogic {
 			.then(data => {
 				this.usersInfo = data
 				this.sortByHonor()
-				// generateLeaderboard() - FIX THIS LATER - Can I abstract it out, or not b/c of the promise? 
+				leaderboard.generate(this.usersInfo)
 				console.log('sorted usersInfo', this.usersInfo)
 			})
 			.catch(err => console.log(`Error: ${err}`))
@@ -36,7 +30,7 @@ class LeaderboardLogic {
 		this.usersInfo.sort((a, b) => b.honor - a.honor)
 	}
 
-	//Add new user to localStorage and run getUserInfo() after fetch
+	//Add new user to localStorage and fetch updated users info
 	async addUser(e){
 		e.preventDefault()
 		const user = document.querySelector('.add-user input').value
@@ -102,37 +96,38 @@ class LocalStorageLogic {
 }
 
 class Board {
-
-}
-
-//Generate leaderboard table from stats (userInfo array)
-function generateLeaderboard() {
-	const table = document.querySelector('table')
-	const newTBody = document.createElement('tbody')
-	
-	usersInfo.forEach((user, i) => {
-		const tr = document.createElement('tr')
-		newTBody.appendChild(tr)
-	
-		const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
-		stats.forEach(stat => {
-			const td = document.createElement('td')
-			td.textContent = stat
-			tr.appendChild(td)
+	//Generate leaderboard table from user stats
+	generate(usersInfo) {
+		const table = document.querySelector('table')
+		const newTBody = document.createElement('tbody')
+		
+		usersInfo.forEach((user, i) => {
+			const tr = document.createElement('tr')
+			newTBody.appendChild(tr)
+		
+			const stats = [i + 1, user.ranks.overall.name, user.username, user.clan, user.honor]
+			stats.forEach(stat => {
+				const td = document.createElement('td')
+				td.textContent = stat
+				tr.appendChild(td)
+			})
 		})
-	})
-	table.removeChild(document.querySelector('tbody'))
-	table.appendChild(newTBody)
+		table.removeChild(document.querySelector('tbody'))
+		table.appendChild(newTBody)
+	}
 }
 
 const localStorageLogic = new LocalStorageLogic()
 const leaderboardLogic = new LeaderboardLogic
+const leaderboard = new Board
 
 //On page load, get users stats and generate leaderboard
 leaderboardLogic.fetchUsersInfo()
 
 // //Listen for add-user form submission
 document.querySelector('.add-user').addEventListener('submit', leaderboardLogic.addUser.bind(leaderboardLogic))
+
+
 
 //Listen for end of error-message animation (fadeIn, fadeOut)
 // const errorMessage = document.querySelector('.error-message')
