@@ -18,7 +18,7 @@ function getUsersInfo() {
 		})
 		.catch(err => console.log(`Error: ${err}`))
 }
-
+//test
 //Generate leaderboard table from stats (userInfo array)
 function generateLeaderboard() {
 	const table = document.querySelector('table')
