@@ -10,19 +10,21 @@ What objects are needed? (use classes for all?)
 class LeaderboardLogic {
 
 	constructor() {
-		this.usersList = JSON.parse(localStorage.getItem('users')) || ['sashavining', 'celiackelly'] //Abstract this out? And change back to []
+		this.usersList = localStorageLogic.getUsersList()
 		this.urls = this.usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
 		this.usersInfo 
 	}
 
-	//Fetch updated info/stats for each user; once all fetches have completed, sort the array 
+	//Fetch updated info/stats for each user; once all fetches have completed, sort array by honor
 	fetchUsersInfo() {
+		this.usersList = localStorageLogic.getUsersList()
 		Promise.all(this.urls.map(url => fetch(url)))
 			.then(res => Promise.all(res.map(r => r.json())))
 			.then(data => {
 				this.usersInfo = data
 				this.sortByHonor()
 				// generateLeaderboard() - FIX THIS LATER - Can I abstract it out, or not b/c of the promise? 
+				console.log(this.usersInfo)
 			})
 			.catch(err => console.log(`Error: ${err}`))
 	}
@@ -32,14 +34,84 @@ class LeaderboardLogic {
 		this.usersInfo.sort((a, b) => b.honor - a.honor)
 	}
 
-	//Add new user 
-	addUser() {
+	//Add new user to localStorage and run getUserInfo() after fetch
+	async addUser(e){
+		e.preventDefault()
+		const user = document.querySelector('.add-user input').value
+		const url = `https://www.codewars.com/api/v1/users/${user}`
+
+		//Clear any previous error messages
+		const errorMessage = document.querySelector('.error-message')
+		errorMessage.textContent = ''
+		errorMessage.classList.remove('fade-in-out')
+
+		const newUser = await fetch(url)
+			.then(res => res.json()) // parse response as JSON
+			.then(data => {
+
+				//If no Codewars user by that name, show error and return 
+				if (!data.username) {
+					errorMessage.textContent = 'Please enter a valid username.'
+					errorMessage.classList.add('fade-in-out')
+					throw new Error ('Not a valid username')
+				}
+
+				// localStorageLogic.initializeArrayStorage()
+
+				// Parse the string data back into an array of objects
+				let temporaryList = JSON.parse(localStorage.getItem('users')) || []
+
+				//Check if username is already in usersList; if so, throw error and return 
+				if (temporaryList.includes(data.username)) {
+					errorMessage.textContent = 'This user is already on the leaderboard.'
+					errorMessage.classList.add('fade-in-out')
+					throw new Error ('Username is already in localStorage')
+				}
+
+				//Push the new data onto the array
+				temporaryList.push(data.username);
+
+				// Re-serialize the array back into a string and store it in localStorage
+				localStorage.setItem('users', JSON.stringify(temporaryList));
+
+				//Clear text from input 
+				document.querySelector('input').value = ''
+			})
+			.catch(err => {
+				console.log(err)
+			})
+
+		this.fetchUsersInfo()
+	}
+}
+
+class LocalStorageLogic {
+
+	constructor() {
 
 	}
 
+	//If no 'users' key in localStorage, set localStorage.users to empty array (so that new users can be pushed to it)
+	initializeArrayStorage() {
+		if (!localStorage.getItem('users')) {
+			let array = []
+			localStorage.setItem('users', JSON.stringify(array))
+		} 
+	}
+
+	//Retrieve 'users' and parse into array
+	getUsersList() {
+		//['sashavining', 'celiackelly']
+		return JSON.parse(localStorage.getItem('users')) || []
+	}
+
+	
+
 }
 
+const localStorageLogic = new LocalStorageLogic()
 const leaderboardLogic = new LeaderboardLogic
+
 //On page load, get users stats and generate leaderboard
 leaderboardLogic.fetchUsersInfo()
 
@@ -65,63 +137,8 @@ function generateLeaderboard() {
 	table.appendChild(newTBody)
 }
 
-//Function- Add new user to localStorage and run getUserInfo() after fetch
-async function addUser(e){
-	e.preventDefault()
-	const user = document.querySelector('.add-user input').value
-	const url = `https://www.codewars.com/api/v1/users/${user}`
-
-	//Clear any previous error messages
-	const errorMessage = document.querySelector('.error-message')
-	errorMessage.textContent = ''
-	errorMessage.classList.remove('fade-in-out')
-
-	const newUser = await fetch(url)
-		.then(res => res.json()) // parse response as JSON
-		.then(data => {
-
-			//If no user by that name, show error and return 
-			if (!data.username) {
-				errorMessage.textContent = 'Please enter a valid username.'
-				errorMessage.classList.add('fade-in-out')
-				throw new Error ('Not a valid username')
-			}
-
-			//If no localStorage, set 'users' to empty array 
-			if (!localStorage.getItem('users')) {
-				let usersList= []
-				localStorage.setItem('users', JSON.stringify(usersList))
-			} 
-
-			let usersList = []
-			// Parse the serialized data back into an array of objects
-			usersList = JSON.parse(localStorage.getItem('users')) || [];
-
-			//Check if username is already in usersList; if so, throw error and return 
-			if (usersList.includes(data.username)) {
-				errorMessage.textContent = 'This user is already on the leaderboard.'
-				errorMessage.classList.add('fade-in-out')
-				throw new Error ('Username is already in localStorage')
-			}
-
-			//Push the new data onto the array
-			usersList.push(data.username);
-
-			// Re-serialize the array back into a string and store it in localStorage
-			localStorage.setItem('users', JSON.stringify(usersList));
-
-			//Clear text from input 
-			document.querySelector('input').value = ''
-		})
-		.catch(err => {
-			console.log(err)
-		})
-	fetchUsersInfo()
-}
-
-
 // //Listen for add-user form submission
-document.querySelector('.add-user').addEventListener('submit', addUser)
+document.querySelector('.add-user').addEventListener('submit', leaderboardLogic.addUser.bind(leaderboardLogic))
 
 //Listen for end of error-message animation (fadeIn, fadeOut)
 // const errorMessage = document.querySelector('.error-message')
