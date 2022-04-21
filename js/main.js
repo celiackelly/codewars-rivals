@@ -5,6 +5,8 @@ What objects are needed? (use classes for all?)
  - leaderboardLogic / usersData 
 		- errorMessage 
  - localStorageObject
+
+ - could you abtract more and make a USER class? 
 */
 
 class LeaderboardLogic {
@@ -56,21 +58,21 @@ class LeaderboardLogic {
 					throw new Error ('Not a valid username')
 				}
 
-				// Parse the string data back into an array of objects
-				let temporaryList = JSON.parse(localStorage.getItem('users')) || []
+				// Copy stored usersList and parse string into array
+				let temporaryList = localStorageLogic.getUsersList()
 
-				//Check if username is already in usersList; if so, throw error and return 
+				//Check if username is already in list; if so, throw error and return 
 				if (temporaryList.includes(data.username)) {
 					errorMessage.textContent = 'This user is already on the leaderboard.'
 					errorMessage.classList.add('fade-in-out')
 					throw new Error ('Username is already in localStorage')
 				}
 
-				//Push the new data onto the array
+				//Push new username onto the array
 				temporaryList.push(data.username);
 
-				// Re-serialize the array back into a string and store it in localStorage
-				localStorage.setItem('users', JSON.stringify(temporaryList));
+				// Store new list in localStorage
+				localStorageLogic.setUsersList(temporaryList)
 
 				console.log('local storage', localStorage.users)
 
@@ -80,33 +82,28 @@ class LeaderboardLogic {
 			.catch(err => {
 				console.log(err)
 			})
-
+		
+		//Fetch updated stats, including new user
 		this.fetchUsersInfo()
 	}
 }
 
 class LocalStorageLogic {
 
-	constructor() {
-
-	}
-
 	//Retrieve 'users' and parse into array
 	getUsersList() {
 		return JSON.parse(localStorage.getItem('users')) || []
 	}
 
-	
-
+	// Re-serialize array of users back into a string and store it in localStorage
+	setUsersList(array) {
+		return localStorage.setItem('users', JSON.stringify(array))
+	}
 }
 
-const localStorageLogic = new LocalStorageLogic()
-const leaderboardLogic = new LeaderboardLogic
+class Board {
 
-//On page load, get users stats and generate leaderboard
-leaderboardLogic.fetchUsersInfo()
-
-
+}
 
 //Generate leaderboard table from stats (userInfo array)
 function generateLeaderboard() {
@@ -127,6 +124,12 @@ function generateLeaderboard() {
 	table.removeChild(document.querySelector('tbody'))
 	table.appendChild(newTBody)
 }
+
+const localStorageLogic = new LocalStorageLogic()
+const leaderboardLogic = new LeaderboardLogic
+
+//On page load, get users stats and generate leaderboard
+leaderboardLogic.fetchUsersInfo()
 
 // //Listen for add-user form submission
 document.querySelector('.add-user').addEventListener('submit', leaderboardLogic.addUser.bind(leaderboardLogic))
