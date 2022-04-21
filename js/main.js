@@ -10,21 +10,21 @@ What objects are needed? (use classes for all?)
 class LeaderboardLogic {
 
 	constructor() {
-		this.usersList = localStorageLogic.getUsersList()
-		this.urls = this.usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
+		this.usersList 
 		this.usersInfo 
 	}
 
 	//Fetch updated info/stats for each user; once all fetches have completed, sort array by honor
 	fetchUsersInfo() {
 		this.usersList = localStorageLogic.getUsersList()
-		Promise.all(this.urls.map(url => fetch(url)))
+		const urls = this.usersList.map(user => `https://www.codewars.com/api/v1/users/${user}`)
+		Promise.all(urls.map(url => fetch(url)))
 			.then(res => Promise.all(res.map(r => r.json())))
 			.then(data => {
 				this.usersInfo = data
 				this.sortByHonor()
 				// generateLeaderboard() - FIX THIS LATER - Can I abstract it out, or not b/c of the promise? 
-				console.log(this.usersInfo)
+				console.log('sorted usersInfo', this.usersInfo)
 			})
 			.catch(err => console.log(`Error: ${err}`))
 	}
@@ -56,8 +56,6 @@ class LeaderboardLogic {
 					throw new Error ('Not a valid username')
 				}
 
-				// localStorageLogic.initializeArrayStorage()
-
 				// Parse the string data back into an array of objects
 				let temporaryList = JSON.parse(localStorage.getItem('users')) || []
 
@@ -73,6 +71,8 @@ class LeaderboardLogic {
 
 				// Re-serialize the array back into a string and store it in localStorage
 				localStorage.setItem('users', JSON.stringify(temporaryList));
+
+				console.log('local storage', localStorage.users)
 
 				//Clear text from input 
 				document.querySelector('input').value = ''
@@ -91,17 +91,8 @@ class LocalStorageLogic {
 
 	}
 
-	//If no 'users' key in localStorage, set localStorage.users to empty array (so that new users can be pushed to it)
-	initializeArrayStorage() {
-		if (!localStorage.getItem('users')) {
-			let array = []
-			localStorage.setItem('users', JSON.stringify(array))
-		} 
-	}
-
 	//Retrieve 'users' and parse into array
 	getUsersList() {
-		//['sashavining', 'celiackelly']
 		return JSON.parse(localStorage.getItem('users')) || []
 	}
 
