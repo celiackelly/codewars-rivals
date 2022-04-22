@@ -5,5 +5,7 @@ I have a bit of an obsession with <a href="https://www.codewars.com/">Codewars</
 
 Enter <a href="https://celiackelly.github.io/codewars-rivals/">Codewars Rivals.</a> Search for any Codewars user and add them to a custom leaderboard of your closest friends and bitterest rivals. Stats refresh on page load so you'll always know who's on top! 
 
+<img href="assets/codewars-rivals-screenshot.png">
+
 ---
 
