@@ -5,7 +5,26 @@ I have a bit of an obsession with <a href="https://www.codewars.com/">Codewars</
 
 Enter <a href="https://celiackelly.github.io/codewars-rivals/">Codewars Rivals.</a> Search for any Codewars user and add them to a custom leaderboard of your closest friends and bitterest rivals. Stats refresh on page load so you'll always know who's on top! 
 
-<img href="assets/codewars-rivals-screenshot.png">
+<img src="/assets/codewars-rivals-screenshot-cropped.png">
 
 ---
 
+## How It's Made
+
+**Tech Used:** HTML5, CSS3, JavaScript, [Codewars API](https://dev.codewars.com/#introduction)
+This app is my first passion project that delves into the world of web APIs, and I had a ton of fun building it. I 
+
+&nbsp;
+## Lessons Learned
+
+APIs,
+local storage,
+promises,
+async / await, 
+CSS animations 
+
+## Next Steps
+
+respond to various screen sizes, 
+better OOP as I learn more, 
+style user info in leaderboard to mimic colors/rank icons on Codewars
