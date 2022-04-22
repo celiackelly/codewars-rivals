@@ -12,6 +12,7 @@ Enter <a href="https://celiackelly.github.io/codewars-rivals/">Codewars Rivals.<
 ## How It's Made
 
 **Tech Used:** HTML5, CSS3, JavaScript, [Codewars API](https://dev.codewars.com/#introduction)
+
 This app is my first passion project that delves into the world of web APIs, and I had a ton of fun building it. When you submit a username through the form, the app saves the username to localStorage. Then it fetches the stats for all usernames saved in localStorage from the Codewars API, sorts them by honor, and displays them in the leaderboard. When you return to Codewars Rivals, your custom leaderboard awaits you, as the names of your previously added users are saved in localStorage. 
 
 ## Lessons Learned
