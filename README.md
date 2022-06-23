@@ -26,7 +26,7 @@ Finally, I explored **CSS animations** to make the error messages fade in and ou
 ## Next Steps
 
 - [ ] improve responsiveness to various screen sizes
-- [ ] improve the implementation of OOP principles as I learn more 
+- [ ] improve the implementation of OOP principles
 - [ ] style the user rows on the leaderboard to mimic the colors and rank icons on Codewars
 
 &nbsp;
